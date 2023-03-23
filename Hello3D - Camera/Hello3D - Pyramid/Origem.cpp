@@ -173,12 +173,12 @@ int main()
 		// Poligono Preenchido - GL_TRIANGLES
 		
 		glBindVertexArray(VAO);
-		glDrawArrays(GL_TRIANGLES, 0, 18);
+		glDrawArrays(GL_TRIANGLES, 0, 24);
 
 		// Chamada de desenho - drawcall
 		// CONTORNO - GL_LINE_LOOP
 		
-		glDrawArrays(GL_POINTS, 0, 18);
+		glDrawArrays(GL_POINTS, 0, 24);
 		glBindVertexArray(0);
 
 		// Troca os buffers da tela
@@ -315,6 +315,15 @@ int setupGeometry()
 		   0.5, -0.5, 0.5, 0.0, 1.0, 1.0,
 		  0.0,  0.5,  0.0, 0.0, 1.0, 1.0,
 		  0.5, -0.5, -0.5, 0.0, 1.0, 1.0,
+
+		  //"Chão"
+		  -5.0, -0.5, -5.0, 0.5, 0.5, 0.5,
+		  -5.0, -0.5,  5.0, 0.5, 0.5, 0.5,
+		   5.0, -0.5, -5.0, 0.5, 0.5, 0.5,
+
+		  -5.0, -0.5,  5.0, 0.5, 0.5, 0.5,
+		   5.0, -0.5,  5.0, 0.5, 0.5, 0.5,
+		   5.0, -0.5, -5.0, 0.5, 0.5, 0.5
 
 
 	};
