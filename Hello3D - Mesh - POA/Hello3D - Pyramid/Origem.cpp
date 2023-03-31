@@ -10,6 +10,9 @@
 #include <iostream>
 #include <string>
 #include <assert.h>
+#include <vector>
+#include <fstream>
+#include <sstream>
 
 using namespace std;
 
@@ -24,6 +27,12 @@ using namespace std;
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+struct Vertex
+{
+	glm::vec3 position;
+	glm::vec3 color;
+};
+
 
 // Protótipo da função de callback de teclado
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
@@ -34,6 +43,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 // Protótipos das funções
 int setupShader();
 int setupGeometry();
+int loadSimpleOBJ(string filepath, int &nVerts);
 
 // Dimensões da janela (pode ser alterado em tempo de execução)
 const GLuint WIDTH = 1000, HEIGHT = 1000;
@@ -73,6 +83,8 @@ float lastX, lastY;
 float sensitivity = 0.05;
 float pitch = 0.0, yaw = -90.0;
 
+vector <Vertex> vertices;
+vector <GLuint> indices;
 
 // Função MAIN
 int main()
@@ -155,6 +167,9 @@ int main()
 
 	glEnable(GL_DEPTH_TEST);
 
+	int nVerts;
+	GLuint VAO2 = loadSimpleOBJ("../suzanne.obj",nVerts);
+
 	// Loop da aplicação - "game loop"
 	while (!glfwWindowShouldClose(window))
 	{
@@ -200,13 +215,13 @@ int main()
 		// Chamada de desenho - drawcall
 		// Poligono Preenchido - GL_TRIANGLES
 		
-		glBindVertexArray(VAO);
-		glDrawArrays(GL_TRIANGLES, 0, 24);
+		glBindVertexArray(VAO2);
+		glDrawArrays(GL_TRIANGLES, 0, nVerts);
 
 		// Chamada de desenho - drawcall
 		// CONTORNO - GL_LINE_LOOP
 		
-		glDrawArrays(GL_POINTS, 0, 24);
+		glDrawArrays(GL_POINTS, 0, nVerts);
 		glBindVertexArray(0);
 
 		// Troca os buffers da tela
@@ -445,5 +460,118 @@ int setupGeometry()
 	glBindVertexArray(0);
 
 	return VAO;
+}
+
+int loadSimpleOBJ(string filepath, int &nVerts)
+{
+	vector <GLfloat> vbuffer;
+	ifstream inputFile;
+	inputFile.open(filepath.c_str());
+	if (inputFile.is_open())
+	{
+		char line[100];
+		string sline;
+		
+		
+		
+		while (!inputFile.eof())
+		{
+			inputFile.getline(line, 100);
+			sline = line;
+			
+			string word;
+			
+			istringstream ssline(line);
+			ssline >> word;
+
+			//cout << word << " ";
+			if (word == "v")
+			{
+				Vertex v;
+
+				ssline >> v.position.x >> v.position.y >> v.position.z;
+				v.color.r = 1.0;  v.color.g = 0.0;  v.color.b = 0.0;
+				
+				vertices.push_back(v);
+			}
+			if (word == "f")
+			{
+				string tokens[3];
+				
+				ssline >> tokens[0] >> tokens[1] >> tokens[2];
+				
+				for (int i = 0; i < 3; i++)
+				{
+					int pos = tokens[i].find("/");
+					string token = tokens[i].substr(0, pos);
+					//cout << token << endl;
+					int index = atoi(token.c_str()) - 1;
+					cout << vertices[index].position.x << "  " << vertices[index].position.y << " " << vertices[index].position.z << endl;
+					vbuffer.push_back(vertices[index].position.x);
+					vbuffer.push_back(vertices[index].position.y);
+					vbuffer.push_back(vertices[index].position.z);
+					vbuffer.push_back(vertices[index].color.r);
+					vbuffer.push_back(vertices[index].color.g);
+					vbuffer.push_back(vertices[index].color.b);
+				
+				}
+			}
+
+		}
+
+	}
+	else
+	{
+		cout << "Problema ao encontrar o arquivo " << filepath << endl;
+	}
+	inputFile.close();
+
+	GLuint VBO, VAO;
+
+	nVerts = vbuffer.size() / 6;
+
+	//Geração do identificador do VBO
+	glGenBuffers(1, &VBO);
+
+	//Faz a conexão (vincula) do buffer como um buffer de array
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+	//Envia os dados do array de floats para o buffer da OpenGl
+	glBufferData(GL_ARRAY_BUFFER, vbuffer.size() * sizeof(GLfloat), vbuffer.data(), GL_STATIC_DRAW);
+
+	//Geração do identificador do VAO (Vertex Array Object)
+	glGenVertexArrays(1, &VAO);
+
+	// Vincula (bind) o VAO primeiro, e em seguida  conecta e seta o(s) buffer(s) de vértices
+	// e os ponteiros para os atributos 
+	glBindVertexArray(VAO);
+
+	//Para cada atributo do vertice, criamos um "AttribPointer" (ponteiro para o atributo), indicando: 
+	// Localização no shader * (a localização dos atributos devem ser correspondentes no layout especificado no vertex shader)
+	// Numero de valores que o atributo tem (por ex, 3 coordenadas xyz) 
+	// Tipo do dado
+	// Se está normalizado (entre zero e um)
+	// Tamanho em bytes 
+	// Deslocamento a partir do byte zero 
+
+	//Atributo posição (x, y, z)
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
+	glEnableVertexAttribArray(0);
+
+	//Atributo cor (r, g, b)
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(1);
+
+
+
+	// Observe que isso é permitido, a chamada para glVertexAttribPointer registrou o VBO como o objeto de buffer de vértice 
+	// atualmente vinculado - para que depois possamos desvincular com segurança
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	// Desvincula o VAO (é uma boa prática desvincular qualquer buffer ou array para evitar bugs medonhos)
+	glBindVertexArray(0);
+
+	return VAO;
+
 }
 
