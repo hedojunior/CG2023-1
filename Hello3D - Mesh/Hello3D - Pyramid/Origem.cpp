@@ -121,7 +121,8 @@ int main()
 	int nVertices;
 	//GLuint VAO = loadSimpleObj("../../3D_Models/Classic-NoTexture/bunny.obj", nVertices);
 	//GLuint VAO = loadSimpleObj("../../3D_Models/Cube/cube.obj", nVertices);
-	GLuint VAO = loadSimpleObj("../../3D_Models/Pokemon/Pikachu.obj", nVertices);
+	//GLuint VAO = loadSimpleObj("../../3D_Models/Pokemon/Pikachu.obj", nVertices);
+	GLuint VAO = loadSimpleObj("../../3D_Models/Suzanne/SuzanneTri.obj", nVertices);
 
 	glUseProgram(shader.ID);
 
