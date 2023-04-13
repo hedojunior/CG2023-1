@@ -119,7 +119,9 @@ int main()
 
 	// Gerando um buffer simples, com a geometria de um triângulo
 	int nVertices;
-	GLuint VAO = loadSimpleObj("../../3D_Models/Classic-NoTexture/bunny.obj", nVertices);
+	//GLuint VAO = loadSimpleObj("../../3D_Models/Classic-NoTexture/bunny.obj", nVertices);
+	//GLuint VAO = loadSimpleObj("../../3D_Models/Cube/cube.obj", nVertices);
+	GLuint VAO = loadSimpleObj("../../3D_Models/Pokemon/Pikachu.obj", nVertices);
 
 	glUseProgram(shader.ID);
 
@@ -193,8 +195,8 @@ int main()
 		// Chamada de desenho - drawcall
 		// CONTORNO - GL_LINE_LOOP
 		
-		glDrawArrays(GL_POINTS, 0, nVertices);
-		glBindVertexArray(0);
+		//glDrawArrays(GL_POINTS, 0, nVertices);
+		//glBindVertexArray(0);
 
 		// Troca os buffers da tela
 		glfwSwapBuffers(window);
