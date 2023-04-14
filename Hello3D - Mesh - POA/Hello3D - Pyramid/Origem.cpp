@@ -31,6 +31,7 @@ struct Vertex
 {
 	glm::vec3 position;
 	glm::vec3 color;
+	//glm::vec3 normal;
 };
 
 
@@ -168,7 +169,9 @@ int main()
 	glEnable(GL_DEPTH_TEST);
 
 	int nVerts;
-	GLuint VAO2 = loadSimpleOBJ("../suzanne.obj",nVerts);
+	//GLuint VAO2 = loadSimpleOBJ("../suzanne.obj",nVerts);
+	//GLuint VAO2 = loadSimpleOBJ("../cubo.obj", nVerts);
+	GLuint VAO2 = loadSimpleOBJ("../../3D_models/Classic-NoTexture/bunny.obj", nVerts);
 
 	// Loop da aplicação - "game loop"
 	while (!glfwWindowShouldClose(window))
@@ -221,8 +224,8 @@ int main()
 		// Chamada de desenho - drawcall
 		// CONTORNO - GL_LINE_LOOP
 		
-		glDrawArrays(GL_POINTS, 0, nVerts);
-		glBindVertexArray(0);
+		//glDrawArrays(GL_POINTS, 0, nVerts);
+		//glBindVertexArray(0);
 
 		// Troca os buffers da tela
 		glfwSwapBuffers(window);
@@ -490,7 +493,7 @@ int loadSimpleOBJ(string filepath, int &nVerts)
 				Vertex v;
 
 				ssline >> v.position.x >> v.position.y >> v.position.z;
-				v.color.r = 1.0;  v.color.g = 0.0;  v.color.b = 0.0;
+				v.color.r = 1.0;  v.color.g = 0.0;  v.color.b = 1.0;
 				
 				vertices.push_back(v);
 			}
@@ -506,7 +509,8 @@ int loadSimpleOBJ(string filepath, int &nVerts)
 					string token = tokens[i].substr(0, pos);
 					//cout << token << endl;
 					int index = atoi(token.c_str()) - 1;
-					cout << vertices[index].position.x << "  " << vertices[index].position.y << " " << vertices[index].position.z << endl;
+					indices.push_back(index);
+					//cout << vertices[index].position.x << "  " << vertices[index].position.y << " " << vertices[index].position.z << endl;
 					vbuffer.push_back(vertices[index].position.x);
 					vbuffer.push_back(vertices[index].position.y);
 					vbuffer.push_back(vertices[index].position.z);
@@ -528,7 +532,7 @@ int loadSimpleOBJ(string filepath, int &nVerts)
 
 	GLuint VBO, VAO;
 
-	nVerts = vbuffer.size() / 6;
+	nVerts = vbuffer.size() / 6; //Provisório
 
 	//Geração do identificador do VBO
 	glGenBuffers(1, &VBO);
