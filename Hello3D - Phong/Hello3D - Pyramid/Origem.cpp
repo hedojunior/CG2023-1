@@ -3,7 +3,7 @@
  * Adaptado por Rossana Baptista Queiroz
  * para a disciplina de Processamento Gráfico/Computação Gráfica - Unisinos
  * Versão inicial: 7/4/2017
- * Última atualização em 01/03/2023
+ * Última atualização em 20/04/2023
  *
  */
 
@@ -121,7 +121,7 @@ int main()
 
 	// Gerando um buffer simples, com a geometria de um triângulo
 	int nVertices;
-	//GLuint VAO = loadSimpleObj("../../3D_Models/Classic-NoTexture/bunny.obj", nVertices);
+	//GLuint VAO = loadSimpleObj("../../3D_Models/Classic/bunny.obj", nVertices);
 	//GLuint VAO = loadSimpleObj("../../3D_Models/Cube/cube.obj", nVertices);
 	//GLuint VAO = loadSimpleObj("../../3D_Models/Pokemon/Pikachu.obj", nVertices);
 	GLuint VAO = loadSimpleObj("../../3D_Models/Suzanne/SuzanneTri.obj", nVertices);
@@ -151,7 +151,7 @@ int main()
 	shader.setFloat("n", 10);
 
 	//Definindo as propriedades da fonte de luz
-	shader.setVec3("lightPos", -2.0f, 5.0f, 2.0f);
+	shader.setVec3("lightPos", -2.0f, 100.0f, 2.0f);
 	shader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
 
 
