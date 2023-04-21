@@ -153,8 +153,19 @@ int main()
 	//GLuint VAO2 = loadSimpleOBJ("../cubo.obj", nVerts);
 	//GLuint VAO2 = loadSimpleOBJ("../../3D_models/Classic-NoTexture/bunny.obj", nVerts);
 	GLuint VAO2 = loadSimpleOBJ("../../3D_models/Suzanne/suzanneTriLowPoly.obj", nVerts);
+	// VAO2 = loadSimpleOBJ("../../3D_models/Pokemon/Pikachu.obj", nVerts);
 
-	
+	//Definindo as propriedades do material da superficie
+	shader.setFloat("ka", 0.4);
+	shader.setFloat("kd", 0.5);
+	shader.setFloat("ks", 0.5);
+	shader.setFloat("q", 10.0);
+
+	//Definindo a fonte de luz pontual
+	shader.setVec3("lightPos", -2.0, 10.0, 2.0);
+	shader.setVec3("lightColor", 1.0, 1.0, 1.0);
+
+
 	// Loop da aplicação - "game loop"
 	while (!glfwWindowShouldClose(window))
 	{
@@ -197,6 +208,8 @@ int main()
 		glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 		glUniformMatrix4fv(viewLoc, 1, FALSE, glm::value_ptr(view));
 		
+		shader.setVec3("cameraPos", cameraPos.x, cameraPos.y, cameraPos.z);
+
 		// Chamada de desenho - drawcall
 		// Poligono Preenchido - GL_TRIANGLES
 		

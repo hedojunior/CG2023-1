@@ -8,11 +8,17 @@ layout (location = 3) in vec3 normal;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
-out vec4 finalColor;
+
+
+out vec3 finalColor;
+out vec3 fragPos;
+out vec3 scaledNormal;
 
 void main()
 {
 	//...pode ter mais linhas de código aqui!
 	gl_Position = projection * view * model * vec4(position, 1.0);
-	finalColor = vec4(color, 1.0);
+	finalColor = color;
+	scaledNormal = normal;
+	fragPos = vec3(model * vec4(position, 1.0));
 }
