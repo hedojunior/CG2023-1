@@ -1,5 +1,5 @@
 //Código fonte do Fragment Shader (em GLSL)
-#version 450
+#version 440
 
 //Informações recebidas do vertex shader
 in vec3 finalColor;
@@ -18,6 +18,9 @@ uniform vec3 lightColor;
 
 //Posição da câmera 
 uniform vec3 cameraPos;
+
+uniform vec3 selectedColor;
+uniform bool isSelected;
 
 //Buffer de saída (color buffer)
 out vec4 color;
@@ -38,7 +41,16 @@ void main()
     float spec = pow(max(dot(R,V),0.0),q);
     vec3 specular = spec * ks * lightColor;
         
-    vec3 result = (ambient + diffuse) * finalColor + specular;
+    vec3 result;
+
+    if (isSelected)
+    {
+        result = (ambient + diffuse) * selectedColor + specular;
+    }
+    else
+    {
+        result = (ambient + diffuse) * finalColor + specular;
+    }
 
     color = vec4(result, 1.0f);
 }

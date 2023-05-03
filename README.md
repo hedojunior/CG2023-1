@@ -1,24 +1,15 @@
-# CG2023-1
+# Trabalho GA - 3D Viewer.
+### Aluno: Hedo Eccker da Silva Júnior
 
-Alguns projetos desenvolvidos para as aulas de Computação Gráfica dos cursos Ciência da Computação e Engenharia Biomédica da Unisinos.
+Utilizei como base o projeto Hello3D - Phong, portanto o nome do projeto ficou o mesmo (pra evitar erros que não teria tempo de consertar).
 
-As dependências estão pré-compiladas para Windows 10 32-bits e compilador do Visual Studio 2019/2022
-Se o seu ambiente de desenvolvimento for diferente, você deve baixar:
+Ao iniciar o programa, é solicitado que se insira o caminho de arquivos .obj para leitura. Podem ser inseridos quantos forem necessários. Ao fim da inserção, é necessário apertar Enter. Considerando o caminho relativo do projeto, o caminho que normalmente utilizei nos testes era algo desse tipo:
+`../../3D_Models/Pokemon/Pikachu.obj`
 
-- GLFW: https://www.glfw.org/
-- GLAD: https://glad.dav1d.de/ - para mais instruções, consulte: https://learnopengl.com/Getting-started/Creating-a-window
-
- Ao abrir o projeto, pode ser que seja necessário mudar a arquitetura para x86 (caso queira usar as dependências que vieram com o projeto):
- 
-![image](https://user-images.githubusercontent.com/2465857/128773364-4589fffe-57f9-4de2-acdf-7898abbaad8b.png)
-
-Se você quiser ou precisar alterar as dependências, você deve ir em Projeto -> Propriedades e alterar estes 3 lugares:
-
-1) Diretório com os arquivos de cabeçalho (onde ficam os .h da biblioteca): 
-![image](https://user-images.githubusercontent.com/2465857/128772404-13b3a1a4-fc71-4a93-9de1-1eb9cba05969.png)
-
-2) Diretório com os arquivos de biblioteca estática pré-compilados (.lib ou .a):
-![image](https://user-images.githubusercontent.com/2465857/128772735-d04bec8e-edcd-485f-a103-e66f1810cdad.png)
-
-3) Incluir os nomes das bibliotecas estáticas:
-![image](https://user-images.githubusercontent.com/2465857/128772961-04745bc6-ef1d-45b3-9aa7-a623d2af3065.png)
+Teclas de utilização:
+- TAB: alterna a seleção entre os objetos carregados;
+- W, A, S, D: Controlam a câmera, junto ao movimento do mouse;
+- X, Y, Z: Iniciam a rotação do objeto selecionado no eixo correspondente;
+- 1: Diminui a escala do objeto selecionado;
+- 2: Aumenta a escala do objeto selecionado;
+- Setas direcionais: Movimentam o objeto selecionado nos eixos X e Y.
