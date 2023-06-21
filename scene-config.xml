@@ -1,0 +1,39 @@
+<SceneConfig>
+    <Scene>
+        <LightPos x="-2.0" y="10.0" z="3.0" />
+        <LightColor r="1.0" g="1.0" b="1.0" />
+        <CameraPos x="0.0" y="0.0" z="3.0" />
+        <CameraFront x="0.0" y="0.0" z="-1.0" />
+        <CameraUp x="0.0" y="1.0" z="0.0" />
+    </Scene>
+    <Objects>
+        <Object>
+            <ObjFile>../../3D_models/Pokemon/Pikachu.obj</ObjFile>
+            <TextureFiles>
+                <TextureFile>../../3D_models/Pokemon/textures/PikachuMouthDh.png</TextureFile>
+                <TextureFile>../../3D_models/Pokemon/textures/PikachuDh.png</TextureFile>
+                <TextureFile>../../3D_models/Pokemon/textures/PikachuHohoDh.png</TextureFile>
+                <TextureFile>../../3D_models/Pokemon/textures/PikachuEyeDh.png</TextureFile>
+                <TextureFile>../../3D_models/Pokemon/textures/PikachuDh.png</TextureFile>
+            </TextureFiles>
+            <InitialRotation x="45.0" y="90.0" z="0.0" />
+            <InitialTranslation x="6.0" y="0.0" z="0.0" />
+            <InitialScale x="1.0" y="1.0" z="1.0" />
+            <Reflection ka="0.3" kd="0.5" ks="0.6" q="10.0" />
+        </Object>
+		<Object>
+            <ObjFile>../../3D_models/Pokemon/Pikachu.obj</ObjFile>
+            <TextureFiles>
+                <TextureFile>../../3D_models/Pokemon/textures/PikachuMouthDh.png</TextureFile>
+                <TextureFile>../../3D_models/Pokemon/textures/PikachuDh.png</TextureFile>
+                <TextureFile>../../3D_models/Pokemon/textures/PikachuHohoDh.png</TextureFile>
+                <TextureFile>../../3D_models/Pokemon/textures/PikachuEyeDh.png</TextureFile>
+                <TextureFile>../../3D_models/Pokemon/textures/PikachuDh.png</TextureFile>
+            </TextureFiles>
+            <InitialRotation x="45.0" y="90.0" z="0.0" />
+            <InitialTranslation x="0.0" y="0.0" z="0.0" />
+            <InitialScale x="1.4" y="1.4" z="1.4" />
+            <Reflection ka="0.7" kd="0.6" ks="0.5" q="10.0" />
+        </Object>
+    </Objects>
+</SceneConfig>
