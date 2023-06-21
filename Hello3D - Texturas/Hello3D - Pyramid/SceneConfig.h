@@ -9,7 +9,6 @@
 class ObjectConfig {
 public:
     std::string objFile;
-    // Ordem e quantidade das texturas deve ser igual ao número de meshes no objeto.
     std::vector<std::string> textureFiles;
     glm::vec3 initialRotation;
     glm::vec3 initialTranslation;
@@ -26,6 +25,7 @@ public:
     glm::vec3 cameraPos;
     glm::vec3 cameraFront;
     glm::vec3 cameraUp;
+    float cameraSpeed;
     
     SceneConfig() {}
     ~SceneConfig() {}

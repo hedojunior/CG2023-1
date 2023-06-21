@@ -74,6 +74,12 @@ void SceneConfig::parseXML(const std::string& filePath) {
             cameraUpElement->QueryFloatAttribute("z", &z);
             cameraUp = glm::vec3(x, y, z);
         }
+
+        // Parse do arquivo do objeto
+        TiXmlElement* cameraSpeedElement = sceneElement->FirstChildElement("CameraSpeed");
+        if (cameraSpeedElement) {
+            cameraSpeed = std::stof(cameraSpeedElement->GetText());
+        }
     }
 
     // Parse dos objetos

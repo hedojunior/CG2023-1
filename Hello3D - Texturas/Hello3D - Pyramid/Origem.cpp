@@ -50,7 +50,7 @@ bool rotateX = false, rotateY = false, rotateZ = false;
 
 glm::vec3 cameraPos, cameraFront, cameraUp;
 GLint viewloc;
-float cameraSpeed = 0.15;
+float cameraSpeed;
 float fov = 50.0f;
 
 bool firstMouse = true;
@@ -98,6 +98,7 @@ int main()
 	cameraPos = sceneConfig.cameraPos;
 	cameraUp = sceneConfig.cameraUp;
 	cameraFront = sceneConfig.cameraFront;
+	cameraSpeed = sceneConfig.cameraSpeed;
 
 	for (ObjectConfig object : sceneConfig.objects)
 	{
