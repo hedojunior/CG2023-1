@@ -6,26 +6,25 @@
 #include "SceneConfig.h"
 #include "tinyxml.h"
 
+using namespace std;
 
-void SceneConfig::parseXML(const std::string& filePath) {
+void SceneConfig::parseXML(const string& filePath) {
     TiXmlDocument xmlDoc(filePath.c_str());
     bool loadSuccess = xmlDoc.LoadFile();
 
     if (!loadSuccess) {
-        std::cout << "Erro ao carregar o arquivo XML." << std::endl;
+        cout << "Erro ao carregar o arquivo XML." << endl;
         return;
     }
 
     TiXmlElement* rootElement = xmlDoc.RootElement();
     if (!rootElement) {
-        std::cout << "Elemento raiz ausente." << std::endl;
+        cout << "Elemento raiz ausente." << endl;
         return;
     }
 
-    // Parse da configuração da cena
     TiXmlElement* sceneElement = rootElement->FirstChildElement("Scene");
     if (sceneElement) {
-        // Parse da posição da luz
         TiXmlElement* lightPosElement = sceneElement->FirstChildElement("LightPos");
         if (lightPosElement) {
             float x, y, z;
@@ -35,7 +34,6 @@ void SceneConfig::parseXML(const std::string& filePath) {
             lightPos = glm::vec3(x, y, z);
         }
 
-        // Parse da cor da luz
         TiXmlElement* lightColorElement = sceneElement->FirstChildElement("LightColor");
         if (lightColorElement) {
             float r, g, b;
@@ -45,7 +43,6 @@ void SceneConfig::parseXML(const std::string& filePath) {
             lightColor = glm::vec3(r, g, b);
         }
 
-        // Parse da posição da câmera
         TiXmlElement* cameraPosElement = sceneElement->FirstChildElement("CameraPos");
         if (cameraPosElement) {
             float x, y, z;
@@ -55,7 +52,6 @@ void SceneConfig::parseXML(const std::string& filePath) {
             cameraPos = glm::vec3(x, y, z);
         }
 
-        // Parse da direção da câmera
         TiXmlElement* cameraFrontElement = sceneElement->FirstChildElement("CameraFront");
         if (cameraFrontElement) {
             float x, y, z;
@@ -65,7 +61,6 @@ void SceneConfig::parseXML(const std::string& filePath) {
             cameraFront = glm::vec3(x, y, z);
         }
 
-        // Parse do vetor 'Up' da câmera
         TiXmlElement* cameraUpElement = sceneElement->FirstChildElement("CameraUp");
         if (cameraUpElement) {
             float x, y, z;
@@ -75,35 +70,27 @@ void SceneConfig::parseXML(const std::string& filePath) {
             cameraUp = glm::vec3(x, y, z);
         }
 
-        // Parse do arquivo do objeto
         TiXmlElement* cameraSpeedElement = sceneElement->FirstChildElement("CameraSpeed");
         if (cameraSpeedElement) {
-            cameraSpeed = std::stof(cameraSpeedElement->GetText());
+            cameraSpeed = stof(cameraSpeedElement->GetText());
+        }
+
+        TiXmlElement* specularElement = sceneElement->FirstChildElement("Specular");
+        if (specularElement) {
+            specular = stof(specularElement->GetText());
         }
     }
 
-    // Parse dos objetos
     TiXmlElement* objectsElement = rootElement->FirstChildElement("Objects");
     if (objectsElement) {
         for (TiXmlElement* objectElement = objectsElement->FirstChildElement("Object"); objectElement; objectElement = objectElement->NextSiblingElement("Object")) {
             ObjectConfig objectConfig;
 
-            // Parse do arquivo do objeto
             TiXmlElement* objFileElement = objectElement->FirstChildElement("ObjFile");
             if (objFileElement) {
                 objectConfig.objFile = objFileElement->GetText();
             }
 
-            // Parse dos arquivos de textura
-            TiXmlElement* textureFilesElement = objectElement->FirstChildElement("TextureFiles");
-            if (textureFilesElement) {
-                for (TiXmlElement* textureFileElement = textureFilesElement->FirstChildElement("TextureFile"); textureFileElement; textureFileElement = textureFileElement->NextSiblingElement("TextureFile")) {
-                    std::string textureFile = textureFileElement->GetText();
-                    objectConfig.textureFiles.push_back(textureFile);
-                }
-            }
-
-            // Parse da rotação inicial
             TiXmlElement* initialRotationElement = objectElement->FirstChildElement("InitialRotation");
             if (initialRotationElement) {
                 float x, y, z;
@@ -113,7 +100,6 @@ void SceneConfig::parseXML(const std::string& filePath) {
                 objectConfig.initialRotation = glm::vec3(x, y, z);
             }
 
-            // Parse da translação inicial
             TiXmlElement* initialTranslationElement = objectElement->FirstChildElement("InitialTranslation");
             if (initialTranslationElement) {
                 float x, y, z;
@@ -123,7 +109,6 @@ void SceneConfig::parseXML(const std::string& filePath) {
                 objectConfig.initialTranslation = glm::vec3(x, y, z);
             }
 
-            // Parse da escala inicial
             TiXmlElement* initialScaleElement = objectElement->FirstChildElement("InitialScale");
             if (initialScaleElement) {
                 float x, y, z;
@@ -131,15 +116,6 @@ void SceneConfig::parseXML(const std::string& filePath) {
                 initialScaleElement->QueryFloatAttribute("y", &y);
                 initialScaleElement->QueryFloatAttribute("z", &z);
                 objectConfig.initialScale = glm::vec3(x, y, z);
-            }
-
-            // Parse dos coeficientes de reflexão
-            TiXmlElement* reflectionElement = objectElement->FirstChildElement("Reflection");
-            if (reflectionElement) {
-                reflectionElement->QueryFloatAttribute("ka", &objectConfig.ka);
-                reflectionElement->QueryFloatAttribute("kd", &objectConfig.kd);
-                reflectionElement->QueryFloatAttribute("ks", &objectConfig.ks);
-                reflectionElement->QueryFloatAttribute("q", &objectConfig.q);
             }
 
             objects.push_back(objectConfig);

@@ -54,8 +54,10 @@ float cameraSpeed;
 float fov = 50.0f;
 
 bool firstMouse = true;
-float lastX = 0.0, lastY = 0.0;
-float yaw = -90.0, pitch = 0.0;
+float lastX = 0.0;
+float lastY = 0.0;
+float _yaw = -90.0;
+float _pitch = 0.0;
 
 int selectedObjectIndex = -1;
 
@@ -106,16 +108,13 @@ int main()
 		Shader * shader = new Shader("vertex.vs", "fragment.fs");
 		shader->use();
 
-		shader->setFloat("ka", object.ka);
-		shader->setFloat("kd", object.kd);
-		shader->setFloat("ks", object.ks);
-		shader->setFloat("q", object.q);
+		shader->setFloat("q", sceneConfig.specular);
 
 		shader->setVec3("lightPos", sceneConfig.lightPos.x, sceneConfig.lightPos.y, sceneConfig.lightPos.z);
 
 		shader->setVec3("lightColor", sceneConfig.lightColor.x, sceneConfig.lightColor.y, sceneConfig.lightColor.z);
 
-		obj->initialize(object.objFile, object.textureFiles, shader, object.ka, object.initialTranslation, object.initialScale, object.initialRotation);
+		obj->initialize(object.objFile, shader, object.initialTranslation, object.initialScale, object.initialRotation);
 
 		glm::mat4 model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		obj->setModel(model);
@@ -267,9 +266,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	{
 		cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
 	}
-
-
-
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
@@ -289,13 +285,13 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	offsetx *= cameraSpeed;
 	offsety *= cameraSpeed;
 
-	pitch += offsety;
-	yaw += offsetx;
+	_pitch += offsety;
+	_yaw += offsetx;
 
 	glm::vec3 front;
-	front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-	front.y = sin(glm::radians(pitch));
-	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+	front.x = cos(glm::radians(_yaw)) * cos(glm::radians(_pitch));
+	front.y = sin(glm::radians(_pitch));
+	front.z = sin(glm::radians(_yaw)) * cos(glm::radians(_pitch));
 	cameraFront = glm::normalize(front);
 
 }

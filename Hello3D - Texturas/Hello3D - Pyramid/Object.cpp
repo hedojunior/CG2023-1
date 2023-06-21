@@ -1,29 +1,35 @@
 #include "Object.h"
 
+#include "MaterialConfig.h"
+
 #include <GLFW/glfw3.h>
 
-void Object::initialize(string filePath, vector<string> texturePaths, Shader* shader, float ka, glm::vec3 position, glm::vec3 scale, glm::vec3 rotation, float angle)
+#include <experimental/filesystem>
+
+namespace fs = std::experimental::filesystem;
+using namespace glm;
+
+void Object::initialize(string filePath, Shader* shader, vec3 position, vec3 scale, vec3 rotation, float angle)
 {
 	this->position = position;
 	this->scale = scale;
 	this->angle = angle;
-	this->ka = ka;
 	this->rotation = rotation;
 	this->shader = shader;
 	
-	loadObj(filePath, texturePaths);
+	loadObj(filePath);
 }
 
 void Object::select()
 {
 	shader->use();
-	shader->setFloat("ka", ka * 1.5);
+	setScale(0.5);
 }
 
 void Object::deselect()
 {
 	shader->use();
-	shader->setFloat("ka", ka);
+	setScale(-0.5);
 }
 
 void Object::setModel(glm::mat4 pos)
@@ -50,21 +56,7 @@ void Object::setProjection(glm::mat4 projection)
 
 void Object::setRotating(glm::vec3 axis, float angle)
 {
-	if (axis.x > 0)
-	{
-		rotation.x = rotation.x + axis.x;
-	}
-
-	if (axis.y > 0)
-	{
-		rotation.y = rotation.y + axis.y;
-	}
-
-	if (axis.z = 0)
-	{
-		rotation.z = rotation.z + axis.z;
-	}
-
+	rotation = axis;
 	this->angle = angle;
 }
 
@@ -125,17 +117,17 @@ void Object::draw()
 	}
 }
 
-void Object::loadObj(string filePath, vector<string> texturePaths)
+void Object::loadObj(string filePath)
 {
-	int iTexture = 0;
-
 	ifstream inputFile;
 	inputFile.open(filePath);
 	vector <GLfloat> vertbuffer;
 
-	vector <glm::vec3> vertices, colors;
-	vector <glm::vec3> normals;
-	vector <glm::vec2> texCoord;
+	vector <vec3> vertices, colors;
+	vector <vec3> normals;
+	vector <vec2> texCoord;
+	MaterialConfig materialConfig;
+	string currentMaterialId;
 
 	bool initializeGroup = true;
 
@@ -172,16 +164,15 @@ void Object::loadObj(string filePath, vector<string> texturePaths)
 						initializeGroup = false;
 						Mesh * m = new Mesh();
 						int nVertices;
+						Material material = materialConfig.getMaterial(currentMaterialId);
 						GLuint VAO = generateVAO(vertbuffer, nVertices);
-						GLuint texID = generateTexture(texturePaths[iTexture]);
-						iTexture++;
-						m->initialize(VAO, nVertices, shader, texID);
+						fs::path texPath(filePath);
+						texPath.replace_filename(material.map_Kd);
+
+						GLuint texID = generateTexture(texPath.string());
+						m->initialize(VAO, nVertices, shader, texID, material.ka, material.ks, material.kd);
 						grupos.push_back(m);
 
-						//vertices.clear();
-						//colors.clear();
-						//normals.clear();
-						//texCoord.clear();
 						vertbuffer.clear();
 					}
 
@@ -244,6 +235,37 @@ void Object::loadObj(string filePath, vector<string> texturePaths)
 
 				}
 
+			}
+
+			if (word == "mtllib")
+			{
+				vector<string> substrings;
+				istringstream iss(sline);
+				string substring;
+
+				while (iss >> substring) {
+					substrings.push_back(substring);
+				}
+
+				fs::path path(filePath);
+				path.replace_filename(substrings[1]);
+				string materialFile = path.string();
+
+				materialConfig.parseMTLFile(materialFile);
+			}
+
+			if (word == "usemtl")
+			{
+				vector<string> substrings;
+				istringstream iss(sline);
+				string substring;
+
+				while (iss >> substring) {
+					substrings.push_back(substring);
+				}
+
+				string materialId = substrings[1];
+				currentMaterialId = materialId;
 			}
 
 		}

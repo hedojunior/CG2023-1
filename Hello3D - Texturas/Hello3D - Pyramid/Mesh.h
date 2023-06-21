@@ -12,7 +12,7 @@ class Mesh
 public:
 	Mesh() {}
 	~Mesh() {}
-	void initialize(GLuint VAO, int nVertices, Shader *shader, GLuint texID); 
+	void initialize(GLuint VAO, int nVertices, Shader *shader, GLuint texID, float ka, float ks, float kd); 
 	void update();
 	void draw();
 
@@ -21,5 +21,6 @@ protected:
 	int nVertices;
 	Shader* shader;
 	GLuint texID;
+	float ka, ks, kd;
 };
 

@@ -5,30 +5,31 @@
 
 #include <glm/glm.hpp>
 
-// Classe ObjectConfig
+using namespace std;
+using namespace glm;
+
 class ObjectConfig {
 public:
-    std::string objFile;
-    std::vector<std::string> textureFiles;
-    glm::vec3 initialRotation;
-    glm::vec3 initialTranslation;
-    glm::vec3 initialScale;
-    float ka, kd, ks, q;
+    string objFile;
+    vec3 initialRotation;
+    vec3 initialTranslation;
+    vec3 initialScale;
 };
 
-// Classe SceneConfig
 class SceneConfig {
 public:
-    std::vector<ObjectConfig> objects;
-    glm::vec3 lightPos;
-    glm::vec3 lightColor;
-    glm::vec3 cameraPos;
-    glm::vec3 cameraFront;
-    glm::vec3 cameraUp;
+    vector<ObjectConfig> objects;
+    
+    vec3 lightPos;
+    vec3 lightColor;
+    vec3 cameraPos;
+    vec3 cameraFront;
+    vec3 cameraUp;
+    float specular;
     float cameraSpeed;
     
     SceneConfig() {}
     ~SceneConfig() {}
     
-    void parseXML(const std::string& xmlFile);
+    void parseXML(const string& xmlFile);
 };

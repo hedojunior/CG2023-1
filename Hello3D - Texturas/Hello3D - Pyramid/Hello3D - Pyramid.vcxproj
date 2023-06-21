@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\Common\src\glad.c" />
     <ClCompile Include="..\..\Common\src\stb_image.cpp" />
+    <ClCompile Include="MaterialConfig.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Origem.cpp" />
@@ -32,6 +33,7 @@
     <ClCompile Include="tinyxmlparser.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="MaterialConfig.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="SceneConfig.h" />
