@@ -28,8 +28,8 @@ Ao iniciar o programa, é solicitado que se insira o caminho de um arquivo .xml 
         <CameraPos x="0.0" y="0.0" z="3.0" />
         <CameraFront x="0.0" y="0.0" z="-1.0" />
         <CameraUp x="0.0" y="1.0" z="0.0" />
-		<CameraSpeed>0.15</CameraSpeed>
-		<Specular>10.0</Specular>
+	<CameraSpeed>0.15</CameraSpeed>
+	<Specular>10.0</Specular>
     </Scene>
     <Objects>
         <Object>
